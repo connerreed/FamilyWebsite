@@ -1,6 +1,7 @@
 from rest_framework import generics
-from .models import FamilyMember
-from .serializers import FamilyMemberSerializer
+from django.shortcuts import render
+from .models import (FamilyMember, Recipe)
+from .serializers import (FamilyMemberSerializer, RecipeSerializer)
 
 # Create your views here.
 class FamilyMemberListCreateView(generics.ListCreateAPIView):
@@ -10,3 +11,11 @@ class FamilyMemberListCreateView(generics.ListCreateAPIView):
 class FamilyMemberRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FamilyMember.objects.all()
     serializer_class = FamilyMemberSerializer
+
+class RecipeListCreateView(generics.ListCreateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+
+class RecipeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
