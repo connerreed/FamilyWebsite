@@ -16,7 +16,7 @@ class MealType(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='recipes')
     recipeAuthor = models.CharField(max_length=100)
     mealType = models.ManyToManyField(MealType, related_name='recipes')
@@ -80,7 +80,7 @@ class Rating(models.Model):
 
 class RecipeAlbum(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     private = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipe_albums')
     recipes = models.ManyToManyField(Recipe, related_name='albums')
@@ -91,7 +91,7 @@ class RecipeAlbum(models.Model):
 
 class MediaAlbum(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     private = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='media_albums')
     pictures = models.ManyToManyField(Picture, related_name='media_albums', blank=True)

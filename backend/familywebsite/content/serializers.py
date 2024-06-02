@@ -1,5 +1,7 @@
+import os
 from rest_framework import serializers
-from .models import FamilyMember, Recipe, RecipeContentImage, MealType
+from .models import (FamilyMember, Recipe, RecipeContentImage, MealType, Picture, Video, Comment,
+                     RecipeAlbum, MediaAlbum)
 
 class RecipeContentImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,11 +40,51 @@ class RecipeSerializer(serializers.ModelSerializer):
             RecipeContentImage.objects.create(recipe=instance, **image_data)
 
         return instance
+    
+class PictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Picture
+        fields = '__all__'
+
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+    def validate_video(self, value):
+        ext = os.path.splitext(value.name)[1]
+        valid_extensions = ['.mp4', '.mov', '.avi', '.mkv', '.flv', '.wmv', '.webm']
+        if not ext.lower() in valid_extensions:
+            raise serializers.ValidationError('Unsupported file type. Please upload a video file.')
+        return value
+    
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class RecipeAlbumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecipeAlbum
+        fields = '__all__'
+
+class MediaAlbumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MediaAlbum
+        fields = '__all__'
 
 class FamilyMemberNestedSerializer(serializers.ModelSerializer):
+    picture_url = serializers.SerializerMethodField()
     class Meta:
         model = FamilyMember
-        fields = ['id', 'name', 'birthday', 'deathday', 'bio', 'picture']
+        fields = ['id', 'name', 'birthday', 'deathday', 'bio', 'picture_url']
+
+    def get_picture_url(self, obj):
+        request = self.context.get('request')
+        if request and hasattr(obj.picture, 'url'):
+            return request.build_absolute_uri(obj.picture.url)
+        return None
+
 
 class FamilyMemberSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
@@ -56,16 +98,16 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
 
     def get_children(self, instance):
         children = instance.children.all()
-        return FamilyMemberNestedSerializer(children, many=True).data
+        return FamilyMemberNestedSerializer(children, many=True, context=self.context).data
 
     def get_spouse_detail(self, instance):
         if instance.spouse:
-            return FamilyMemberNestedSerializer(instance.spouse).data
+            return FamilyMemberNestedSerializer(instance.spouse, context=self.context).data
         return None
 
     def get_parents(self, instance):
         parents = [instance.father, instance.mother]
-        return FamilyMemberNestedSerializer([parent for parent in parents if parent], many=True).data
+        return FamilyMemberNestedSerializer([parent for parent in parents if parent], many=True, context=self.context).data
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -74,10 +116,10 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
         representation['mother'] = instance.mother.name if instance.mother else None
         representation['spouse'] = instance.spouse.name if instance.spouse else None
         return representation
-    
+
     def get_picture_url(self, obj):
         request = self.context.get('request')
-        if obj.picture:
+        if request and hasattr(obj.picture, 'url'):
             return request.build_absolute_uri(obj.picture.url)
         return None
 
