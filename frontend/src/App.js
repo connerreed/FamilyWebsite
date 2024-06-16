@@ -1,8 +1,9 @@
 import "./css/App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import CustomNavbar from "./CustomNavbar";
-import Home from "./Home";
+import CustomNavbar from "./components/CustomNavbar";
+import Home from "./components/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function App() {
     return (

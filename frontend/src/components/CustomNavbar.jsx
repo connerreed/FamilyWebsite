@@ -2,8 +2,8 @@ import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/CustomNavbar.css"; // Import custom CSS
-import ReedFamilyIcon from "./imgs/ReedFamilyIcon.png"; // Import image
+import "../css/CustomNavbar.css"; // Import custom CSS
+import ReedFamilyIcon from "../imgs/ReedFamilyIcon.png"; // Import image
 
 function CustomNavbar() {
     return (
