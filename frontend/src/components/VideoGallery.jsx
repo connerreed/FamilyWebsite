@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,6 +6,8 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
 const VideoGallery = () => {
+    const [loading, setLoading] = useState(false);
+
     const videos = [
         {
             id: 1,
@@ -30,6 +32,18 @@ const VideoGallery = () => {
         { id: 5, videoSrc: "https://picsum.photos/200/300", user: "User 5" },
         { id: 6, videoSrc: "https://picsum.photos/200/300", user: "User 6" },
     ];
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }, { videos });
+
+    if (loading) {
+        return <h1>Loading...</h1>;
+    }
+
     return (
         <Container>
             <Row>

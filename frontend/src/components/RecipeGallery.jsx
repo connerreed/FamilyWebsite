@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,6 +6,8 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
 const Recipes = () => {
+    const [loading, setLoading] = useState(false);
+
     const recipes = [
         {
             id: 1,
@@ -46,12 +48,26 @@ const Recipes = () => {
         },
     ];
 
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }, { recipes });
+
+    if (loading) {
+        return <h1>Loading...</h1>;
+    }
+
     return (
         <Container>
             <Row>
                 {recipes.map((recipe) => (
                     <Col key={recipe.id} md={4} className="mb-4">
-                        <Link to={`/recipes/${recipe.id}`} style={{textDecoration: "none"}}>
+                        <Link
+                            to={`/recipes/${recipe.id}`}
+                            style={{ textDecoration: "none" }}
+                        >
                             <Card bg="secondary">
                                 <Card.Img variant="top" src={recipe.imageSrc} />
                                 <Card.Body>

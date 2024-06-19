@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -6,15 +6,30 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
 const Pictures = () => {
+    const [loading, setLoading] = useState(false);
+
     const pictures = [
-        {id: 1, imageSrc: "https://picsum.photos/200/300", user: "Conner Reed"},
-        {id: 2, imageSrc: "https://picsum.photos/200/300", user: "Lance Reed"},
-        {id: 3, imageSrc: "https://picsum.photos/200/300", user: "Linda Reed"},
-        {id: 4, imageSrc: "https://picsum.photos/200/300", user: "Kathryn Rosenberg"},
+        {id: 1, imageSrc: "https://picsum.photos/200/300", user: "User 1"},
+        {id: 2, imageSrc: "https://picsum.photos/200/300", user: "User 2"},
+        {id: 3, imageSrc: "https://picsum.photos/200/300", user: "User 3"},
+        {id: 4, imageSrc: "https://picsum.photos/200/300", user: "User 4"},
         {id: 5, imageSrc: "https://picsum.photos/200/300", user: "User 5"},
         {id: 6, imageSrc: "https://picsum.photos/200/300", user: "User 6"}
-
     ];
+
+
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }, {pictures});
+
+    if (loading) {
+        return <h1>Loading...</h1>;
+    }
+
     return (
         <Container>
             <Row>
