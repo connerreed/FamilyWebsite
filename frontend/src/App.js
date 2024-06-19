@@ -3,23 +3,27 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import CustomNavbar from "./components/CustomNavbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import Pictures from "./components/Pictures";
-import Recipes from "./components/Recipes";
-import Videos from "./components/Videos";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import PictureGallery from "./components/PictureGallery";
+import Picture from "./components/Picture";
+import RecipeGallery from "./components/RecipeGallery";
+import Recipe from "./components/Recipe";
+import VideoGallery from "./components/VideoGallery";
+import Video from "./components/Video";
 
 function App() {
     return (
         <HashRouter>
-            <div className="App">
+            <div className="App bg-dark">
                 <CustomNavbar />
                 <div className="content">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/recipes" element={<Recipes />} />
-                        <Route path="/pictures" element={<Pictures />} />
-                        <Route path="/videos" element={<Videos />} />
+                        <Route path="/recipes" element={<RecipeGallery />} />
+                        <Route path="/recipes/:id" element={<Recipe />} />
+                        <Route path="/pictures" element={<PictureGallery />} />
+                        <Route path="/pictures/:id" element={<Picture />} />
+                        <Route path="/videos" element={<VideoGallery />} />
+                        <Route path="/videos/:id" element={<Video />} />
                         <Route path="/login" element={<Login />} />
                     </Routes>
                 </div>
